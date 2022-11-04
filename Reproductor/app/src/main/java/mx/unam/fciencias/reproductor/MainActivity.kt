@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         val entrada = findViewById<View>(R.id.campo_texto) as EditText
         println(minero.leeArtista(entrada.getText().toString()))
         println(minero.leeNombre(entrada.getText().toString()))
+        println(minero.leeAlbum(entrada.getText().toString()))
+        println(minero.leeFecha(entrada.getText().toString()))
+        println(minero.leeGenero(entrada.getText().toString()))
+        println(minero.leeNumero(entrada.getText().toString()))
     }
 
     //val ruta = "storage/emulated/0/Music/Samsung/Over_the_Horizon.mp3"

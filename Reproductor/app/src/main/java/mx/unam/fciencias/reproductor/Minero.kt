@@ -29,4 +29,20 @@ class Minero {
         return lee(ruta, MediaMetadataRetriever.METADATA_KEY_TITLE)
     }
 
+    //regresa el álbum de la canción que recibe
+    fun  leeAlbum(ruta: String): String? {
+        return lee(ruta, MediaMetadataRetriever.METADATA_KEY_ALBUM)
+    }
+    //regresa la fecha de la canción que recibe
+    fun  leeFecha(ruta: String): String? {
+        return lee(ruta, MediaMetadataRetriever.METADATA_KEY_DATE)
+    }
+    //regresa el género de la canción que recibe
+    fun  leeGenero(ruta: String): String? {
+        return lee(ruta, MediaMetadataRetriever.METADATA_KEY_GENRE)
+    }
+    //regresa el número de pista de la canción que recibe
+    fun  leeNumero(ruta: String): String? {
+        return lee(ruta, MediaMetadataRetriever.METADATA_KEY_DISC_NUMBER)
+    }
 }
