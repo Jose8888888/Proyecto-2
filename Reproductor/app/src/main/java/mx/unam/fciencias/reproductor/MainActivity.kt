@@ -37,40 +37,23 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        val path = "storage/emulated/0/Download"
-        Log.d("Files", "Path: $path")
 
-
-        val directory = File(path)
-        val files = directory.listFiles()
-        Log.d("Files", "Size: " + files.size)
-        for (i in files.indices) {
-
-            val indice: Int = files[i].getAbsolutePath().lastIndexOf(".")
-
-            if (indice != -1) {
-
-                val extension: String =
-                    files[i].getAbsolutePath().substring(indice)
-
-                if (extension == ".mp3") {
-                    Log.d("Files", "FileName:" + files[i].name)
-
-                }
-            }
-        }
 
     }
 
 
     fun recibeEntrada(v: View) {
         val entrada = findViewById<View>(R.id.campo_texto) as EditText
-        println(minero.leeArtista(entrada.getText().toString()))
-        println(minero.leeNombre(entrada.getText().toString()))
-        println(minero.leeAlbum(entrada.getText().toString()))
-        println(minero.leeFecha(entrada.getText().toString()))
-        println(minero.leeGenero(entrada.getText().toString()))
-        println(minero.leeNumero(entrada.getText().toString()))
+        val ruta = entrada.getText().toString()
+        val archivos = minero.buscaMp3(ruta)
+        archivos.forEach {
+            println(minero.leeArtista(ruta + "/" + it))
+            println(minero.leeNombre(ruta + "/" +it))
+            println(minero.leeAlbum(ruta + "/" +it))
+            println(minero.leeFecha(ruta + "/" +it))
+            println(minero.leeGenero(ruta + "/" +it))
+            println(minero.leeNumero(ruta + "/" + it))
+        }
     }
 
 }

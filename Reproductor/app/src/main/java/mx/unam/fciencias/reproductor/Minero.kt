@@ -1,6 +1,8 @@
 package mx.unam.fciencias.reproductor
 
 import android.media.MediaMetadataRetriever
+import android.util.Log
+import java.io.File
 
 var controlador = Controlador()
 
@@ -44,5 +46,27 @@ class Minero {
     //regresa el número de pista de la canción que recibe
     fun  leeNumero(ruta: String): String? {
         return lee(ruta, MediaMetadataRetriever.METADATA_KEY_DISC_NUMBER)
+    }
+
+    //lee los archivos de un directorio y regresa los mp3
+    fun buscaMp3(directorio: String): List<String> {
+        val dir = File(directorio)
+        val files = dir.listFiles()
+        val archivos = mutableListOf<String>()
+        for (i in files.indices) {
+
+            val indice: Int = files[i].getAbsolutePath().lastIndexOf(".")
+
+            if (indice != -1) {
+
+                val extension: String =
+                    files[i].getAbsolutePath().substring(indice)
+
+                if (extension == ".mp3") {
+                    archivos.add(files[i].name)
+                }
+            }
+        }
+        return archivos
     }
 }
