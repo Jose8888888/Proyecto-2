@@ -3,21 +3,18 @@ package mx.unam.fciencias.reproductor
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
 
 
 class MainActivity : AppCompatActivity() {
 
-    val minero = Minero()
+    private val minero = Minero()
+    private val crea = CreaBaseDeDatos(this)
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,6 +34,26 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        if (crea != null) {
+            println("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + crea)
+
+            val bdd = crea.getWritableDatabase()
+
+            crea.agregaTipos(bdd)
+
+            val c = bdd.rawQuery("SELECT * FROM types", null);
+
+            if (c != null) {
+                while (c.moveToNext()) {
+                    println(c.getString(0))
+                    println(c.getString(1))
+
+                }
+            }
+            c.close()
+        } else {
+            println("Noooooooooooooooooooooooooooooooooooooooooooooooooo")
+        }
 
 
     }
