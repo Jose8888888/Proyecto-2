@@ -5,7 +5,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-class CreaBaseDeDatos : SQLiteOpenHelper {
+class ManejadorBaseDeDatos : SQLiteOpenHelper {
+
+    public enum class Tabla {
+        PERFORMERS,
+        PERSONS,
+        GROUPS,
+        ALBUMS,
+        ROLAS,
+        IN_GROUP
+    }
 
     private val types =
         "CREATE TABLE IF NOT EXISTS types(id_type INTEGER PRIMARY KEY, description TEXT);"
@@ -36,34 +45,47 @@ class CreaBaseDeDatos : SQLiteOpenHelper {
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {}
 
 
-    //agrega los datos de la tabla types
-     fun agregaTipos(db: SQLiteDatabase) {
-        db.execSQL(types)
-        db.execSQL(performers)
-        db.execSQL(persons)
-        db.execSQL(groups)
-        db.execSQL(albums)
-        db.execSQL(rolas)
-        db.execSQL(in_group)
+    //crea las tablas y agrega los datos de la tabla types
+     fun inicializa(bdd: SQLiteDatabase) {
+        bdd.execSQL(types)
+        bdd.execSQL(performers)
+        bdd.execSQL(persons)
+        bdd.execSQL(groups)
+        bdd.execSQL(albums)
+        bdd.execSQL(rolas)
+        bdd.execSQL(in_group)
 
-        println("oooooooooooooooooooooooooooooooooooooooooooooooooosmg")
 
-        if (db != null) {
+        if (bdd != null) {
             val datos = ContentValues()
             datos.put("description", "Person")
-            println(datos)
-            db.insert("types", null, datos)
+            bdd.insert("types", null, datos)
             datos.clear()
             datos.put("description", "Group")
-            db.insert("types", null, datos)
+            bdd.insert("types", null, datos)
             datos.clear()
             datos.put("description", "Unknow")
-            db.insert("types", null, datos)
+            bdd.insert("types", null, datos)
 
         }
     }
 
+    //agrega datos a la tabla performers
+    fun agregaPersona(nombreArtistico: String, nombre: String, nacimiento: String, muerte: String, bdd: SQLiteDatabase) {
 
+        val cursor = bdd.rawQuery("SELECT * FROM persons WHERE stage_name = '$nombreArtistico'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("stage_name", nombreArtistico)
+            datos.put("real_name", nombre)
+            datos.put("birth_date", nacimiento)
+            datos.put("death_date", muerte)
+
+            bdd.insert("persons", null, datos)
+        }
+    }
 
 
 }

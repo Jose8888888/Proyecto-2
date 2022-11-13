@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 class MainActivity : AppCompatActivity() {
 
     private val minero = Minero()
-    private val crea = CreaBaseDeDatos(this)
+    private val manejador = ManejadorBaseDeDatos(this)
 
 
 
@@ -34,26 +34,35 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        if (crea != null) {
-            println("SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII" + crea)
 
-            val bdd = crea.getWritableDatabase()
+        val bdd = manejador.writableDatabase
 
-            crea.agregaTipos(bdd)
+        manejador.inicializa(bdd)
+        manejador.agregaPersona("Java", "Juan", "ayer", "mañana", bdd)
 
-            val c = bdd.rawQuery("SELECT * FROM types", null);
+        val cursor = bdd.rawQuery("SELECT * FROM persons", null)
 
-            if (c != null) {
-                while (c.moveToNext()) {
-                    println(c.getString(0))
-                    println(c.getString(1))
+        if(cursor != null && cursor.count > 0)
+        {
 
-                }
+            if (cursor.moveToFirst())
+            {
+                do {
+                    println(cursor.getString(0))
+                    println(cursor.getString(1))
+                    println(cursor.getString(2))
+                    println(cursor.getString(3))
+                    println(cursor.getString(4))
+
+
+                } while (cursor.moveToNext())
             }
-            c.close()
-        } else {
-            println("Noooooooooooooooooooooooooooooooooooooooooooooooooo")
         }
+
+
+        bdd.close()
+        cursor.close()
+
 
 
     }
@@ -61,15 +70,15 @@ class MainActivity : AppCompatActivity() {
 
     fun recibeEntrada(v: View) {
         val entrada = findViewById<View>(R.id.campo_texto) as EditText
-        val ruta = entrada.getText().toString()
+        val ruta = entrada.text.toString()
         val archivos = minero.buscaMp3(ruta)
         archivos.forEach {
-            println(minero.leeArtista(ruta + "/" + it))
-            println(minero.leeNombre(ruta + "/" +it))
-            println(minero.leeAlbum(ruta + "/" +it))
-            println(minero.leeFecha(ruta + "/" +it))
-            println(minero.leeGenero(ruta + "/" +it))
-            println(minero.leeNumero(ruta + "/" + it))
+            println(minero.leeArtista("$ruta/$it"))
+            println(minero.leeNombre("$ruta/$it"))
+            println(minero.leeAlbum("$ruta/$it"))
+            println(minero.leeFecha("$ruta/$it"))
+            println(minero.leeGenero("$ruta/$it"))
+            println(minero.leeNumero("$ruta/$it"))
         }
     }
 
