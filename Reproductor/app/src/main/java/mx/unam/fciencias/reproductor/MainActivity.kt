@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         manejador.inicializa()
 
-        val cursor = bdd.rawQuery("SELECT * FROM performers", null)
+        val cursor = bdd.rawQuery("SELECT * FROM albums", null)
 
         if(cursor != null && cursor.count > 0)
         {
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                     println(cursor.getString(0))
                     println(cursor.getString(1))
                     println(cursor.getString(2))
+                    println(cursor.getString(3))
 
 
                 } while (cursor.moveToNext())
@@ -80,12 +81,12 @@ class MainActivity : AppCompatActivity() {
                 manejador.agregaPerformer(2, artista)
             }
 
-            println(minero.leeArtista("$ruta/$it"))
-            println(minero.leeNombre("$ruta/$it"))
-            println(minero.leeAlbum("$ruta/$it"))
-            println(minero.leeFecha("$ruta/$it"))
-            println(minero.leeGenero("$ruta/$it"))
-            println(minero.leeNumero("$ruta/$it"))
+            val album = minero.leeAlbum("$ruta/$it")
+            if (album != null) {
+                manejador.agregaAlbum("$ruta/$it", album, 0)
+            }
+
+
         }
     }
 

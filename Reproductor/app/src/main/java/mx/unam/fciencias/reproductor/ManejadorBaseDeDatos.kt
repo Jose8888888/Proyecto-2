@@ -84,4 +84,73 @@ class ManejadorBaseDeDatos {
             bdd.insert("persons", null, datos)
         }
     }
+
+    //agrega datos a la tabla groups
+    fun agregaGrupo( nombre: String, inicio: String, fin: String) {
+
+        val cursor = bdd.rawQuery("SELECT * FROM groups WHERE name = '$nombre'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("name", nombre)
+            datos.put("start_date", inicio)
+            datos.put("end_date", fin)
+
+            bdd.insert("groups", null, datos)
+        }
+    }
+
+    //agrega datos a la tabla albums
+    fun agregaAlbum(ruta: String, nombre: String, año: Int) {
+
+        val cursor = bdd.rawQuery("SELECT * FROM albums WHERE path = '$ruta'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("path", ruta)
+            datos.put("name", nombre)
+            datos.put("year", año)
+
+            bdd.insert("albums", null, datos)
+        }
+    }
+    //agrega datos a la tabla rolas
+    fun agregaRola(performer: Int, album: Int, ruta: String, titulo: String, track: Int, año: Int, genero: String ) {
+
+        val cursor = bdd.rawQuery("SELECT * FROM rolas WHERE path = '$ruta'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("id_performer", performer)
+            datos.put("id_album", album)
+            datos.put("path", ruta)
+            datos.put("tittle", titulo)
+            datos.put("track", track)
+            datos.put("year", año)
+            datos.put("genre", genero)
+
+            bdd.insert("rolas", null, datos)
+        }
+    }
+
+    //agrega datos a la tabla in_group
+    fun agregaEnGrupo(persona: Int, grupo: Int) {
+
+        val cursor = bdd.rawQuery("SELECT * FROM in_group WHERE id_person = '$persona' AND id_group = '$grupo'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("id_person", persona)
+            datos.put("id_group", grupo)
+
+            bdd.insert("in_group", null, datos)
+        }
+    }
+
+
+
 }
