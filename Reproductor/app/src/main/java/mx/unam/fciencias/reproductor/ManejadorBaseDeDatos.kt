@@ -1,20 +1,11 @@
 package mx.unam.fciencias.reproductor
 
 import android.content.ContentValues
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase
 
-class ManejadorBaseDeDatos : SQLiteOpenHelper {
+class ManejadorBaseDeDatos {
 
-    public enum class Tabla {
-        PERFORMERS,
-        PERSONS,
-        GROUPS,
-        ALBUMS,
-        ROLAS,
-        IN_GROUP
-    }
+     private val bdd : SQLiteDatabase
 
     private val types =
         "CREATE TABLE IF NOT EXISTS types(id_type INTEGER PRIMARY KEY, description TEXT);"
@@ -33,20 +24,12 @@ class ManejadorBaseDeDatos : SQLiteOpenHelper {
         "CREATE TABLE IF NOT EXISTS in_group ( id_person INTEGER, id_group INTEGER, PRIMARY KEY (id_person, id_group), FOREIGN KEY (id_person) REFERENCES persons(id_person), " +
                 "FOREIGN KEY (id_group) REFERENCES groups(id_group) );"
 
-
-    constructor (context: Context?) : super(context, "basededatos.sqlite", null, 1) {
-
+    constructor(bdd: SQLiteDatabase) {
+        this.bdd = bdd
     }
-
-    override fun onCreate(db: SQLiteDatabase) {
-
-    }
-
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {}
-
 
     //crea las tablas y agrega los datos de la tabla types
-     fun inicializa(bdd: SQLiteDatabase) {
+    fun inicializa() {
         bdd.execSQL(types)
         bdd.execSQL(performers)
         bdd.execSQL(persons)
@@ -71,7 +54,22 @@ class ManejadorBaseDeDatos : SQLiteOpenHelper {
     }
 
     //agrega datos a la tabla performers
-    fun agregaPersona(nombreArtistico: String, nombre: String, nacimiento: String, muerte: String, bdd: SQLiteDatabase) {
+    fun agregaPerformer(tipo: Int, nombre: String) {
+
+        val cursor = bdd.rawQuery("SELECT * FROM performers WHERE name = '$nombre'", null)
+
+        if (cursor.count == 0) {
+
+            val datos = ContentValues()
+            datos.put("id_type", tipo)
+            datos.put("name", nombre)
+
+            bdd.insert("performers", null, datos)
+        }
+    }
+
+    //agrega datos a la tabla persons
+    fun agregaPersona(nombreArtistico: String, nombre: String, nacimiento: String, muerte: String) {
 
         val cursor = bdd.rawQuery("SELECT * FROM persons WHERE stage_name = '$nombreArtistico'", null)
 
@@ -86,6 +84,4 @@ class ManejadorBaseDeDatos : SQLiteOpenHelper {
             bdd.insert("persons", null, datos)
         }
     }
-
-
 }

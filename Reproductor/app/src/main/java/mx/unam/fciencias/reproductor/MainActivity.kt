@@ -1,6 +1,7 @@
 package mx.unam.fciencias.reproductor
 
 import android.Manifest
+import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -13,7 +14,8 @@ import androidx.core.app.ActivityCompat
 class MainActivity : AppCompatActivity() {
 
     private val minero = Minero()
-    private val manejador = ManejadorBaseDeDatos(this)
+    private val creador = CreadorBaseDeDatos(this)
+
 
 
 
@@ -33,14 +35,12 @@ class MainActivity : AppCompatActivity() {
                 1
             )
         }
+        val bdd: SQLiteDatabase = creador.writableDatabase
+        val manejador = ManejadorBaseDeDatos(bdd)
 
+        manejador.inicializa()
 
-        val bdd = manejador.writableDatabase
-
-        manejador.inicializa(bdd)
-        manejador.agregaPersona("Java", "Juan", "ayer", "mañana", bdd)
-
-        val cursor = bdd.rawQuery("SELECT * FROM persons", null)
+        val cursor = bdd.rawQuery("SELECT * FROM performers", null)
 
         if(cursor != null && cursor.count > 0)
         {
@@ -48,19 +48,16 @@ class MainActivity : AppCompatActivity() {
             if (cursor.moveToFirst())
             {
                 do {
+
                     println(cursor.getString(0))
                     println(cursor.getString(1))
                     println(cursor.getString(2))
-                    println(cursor.getString(3))
-                    println(cursor.getString(4))
 
 
                 } while (cursor.moveToNext())
             }
         }
 
-
-        bdd.close()
         cursor.close()
 
 
@@ -72,7 +69,17 @@ class MainActivity : AppCompatActivity() {
         val entrada = findViewById<View>(R.id.campo_texto) as EditText
         val ruta = entrada.text.toString()
         val archivos = minero.buscaMp3(ruta)
+
+        val bdd: SQLiteDatabase = creador.writableDatabase
+        val manejador = ManejadorBaseDeDatos(bdd)
+
         archivos.forEach {
+
+            val artista = minero.leeArtista("$ruta/$it")
+            if (artista != null) {
+                manejador.agregaPerformer(2, artista)
+            }
+
             println(minero.leeArtista("$ruta/$it"))
             println(minero.leeNombre("$ruta/$it"))
             println(minero.leeAlbum("$ruta/$it"))
