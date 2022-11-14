@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private val creador = CreadorBaseDeDatos(this)
     private var reproductor = Reproductor()
     private val controlador = Controlador()
-    private var directorio = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +60,6 @@ class MainActivity : AppCompatActivity() {
         val imagen = findViewById<View>(mx.unam.fciencias.reproductor.R.id.imagen) as ImageView
         reproductor = Reproductor(play, mp, imagen, this)
 
-        val intent = Intent(this, Inicio::class.java)
-        startActivity(intent)
 
     }
 
