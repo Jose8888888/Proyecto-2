@@ -46,7 +46,7 @@ class Controlador : AppCompatActivity() {
         val minero = Minero()
         val archivos = minero.buscaMp3("storage/emulated/0/Music")
         val mp = MediaPlayer()
-        mp.setDataSource("storage/emulated/0/Music/" + archivos[1])
+        mp.setDataSource("storage/emulated/0/Music/" + archivos[0])
         mp.prepare()
 
         lista.add(mp)

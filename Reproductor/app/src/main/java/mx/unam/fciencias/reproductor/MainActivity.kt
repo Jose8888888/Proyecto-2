@@ -41,20 +41,7 @@ class MainActivity : AppCompatActivity() {
         val bdd: SQLiteDatabase = creador.writableDatabase
         val manejador = ManejadorBaseDeDatos(bdd)
         manejador.inicializa()
-        val cursor = bdd.rawQuery("SELECT * FROM albums", null)
-        if(cursor != null && cursor.count > 0)
-        {
-            if (cursor.moveToFirst())
-            {
-                do {
-                    println(cursor.getString(0))
-                    println(cursor.getString(1))
-                    println(cursor.getString(2))
-                    println(cursor.getString(3))
-                } while (cursor.moveToNext())
-            }
-        }
-        cursor.close()
+
         val play = findViewById<View>(mx.unam.fciencias.reproductor.R.id.play) as Button
         val mp = MediaPlayer.create(this, mx.unam.fciencias.reproductor.R.raw.tea)
         val imagen = findViewById<View>(mx.unam.fciencias.reproductor.R.id.imagen) as ImageView
@@ -63,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    //Guarda el archivo que recibe como entrada en la base de datos
     fun recibeEntrada(v: View) {
         val entrada = findViewById<View>(R.id.campo_texto) as EditText
         val ruta = entrada.text.toString()
