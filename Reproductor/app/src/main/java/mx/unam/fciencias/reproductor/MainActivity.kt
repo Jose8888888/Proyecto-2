@@ -2,10 +2,13 @@ package mx.unam.fciencias.reproductor
 
 import android.Manifest
 import android.database.sqlite.SQLiteDatabase
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -15,8 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private val minero = Minero()
     private val creador = CreadorBaseDeDatos(this)
-
-
+    private var reproductor = Reproductor()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -37,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
         val bdd: SQLiteDatabase = creador.writableDatabase
         val manejador = ManejadorBaseDeDatos(bdd)
-
         manejador.inicializa()
 
         val cursor = bdd.rawQuery("SELECT * FROM albums", null)
@@ -57,12 +58,16 @@ class MainActivity : AppCompatActivity() {
 
                 } while (cursor.moveToNext())
             }
+
+
         }
 
         cursor.close()
 
-
-
+        val play = findViewById<View>(mx.unam.fciencias.reproductor.R.id.play) as Button
+        val mp = MediaPlayer.create(this, mx.unam.fciencias.reproductor.R.raw.tea)
+        val imagen = findViewById<View>(mx.unam.fciencias.reproductor.R.id.imagen) as ImageView
+        reproductor = Reproductor(play, mp, imagen, this)
     }
 
 
@@ -88,6 +93,11 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+    }
+
+    //reproduce o pausa la canción
+    fun reproducePausa(view : View) {
+        reproductor.reproducePausa(this)
     }
 
 }

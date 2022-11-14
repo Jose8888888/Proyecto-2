@@ -16,7 +16,7 @@ class Minero {
         if (dato != null) {
             return dato
         } else {
-            controlador.error("El archivo no existe")
+            controlador.enviaError("El archivo no existe")
         }
         return null
     }
