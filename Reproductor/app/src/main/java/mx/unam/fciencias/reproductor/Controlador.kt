@@ -40,8 +40,16 @@ class Controlador : AppCompatActivity() {
 
     //regresa una lista con las canciones que lee
     fun canciones(context : Context) : MutableList<MediaPlayer> {
+
         var lista = mutableListOf<MediaPlayer>()
-        lista.add(MediaPlayer.create(context, mx.unam.fciencias.reproductor.R.raw.tea))
+
+        val minero = Minero()
+        val archivos = minero.buscaMp3("storage/emulated/0/Download")
+        val mp = MediaPlayer()
+        mp.setDataSource("storage/emulated/0/Download/" + archivos[1])
+        mp.prepare()
+
+        lista.add(mp)
 
         return lista
 

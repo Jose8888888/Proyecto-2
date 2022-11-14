@@ -39,15 +39,19 @@ class Reproductor {
 
     //reproduce o pausa la canción
     fun reproducePausa(context : Context) {
+
         if (canciones[i].isPlaying) {
             canciones[i].pause()
             play?.setBackgroundResource(mx.unam.fciencias.reproductor.R.drawable.reproducir)
             Toast.makeText(context, "Canción pausada", Toast.LENGTH_SHORT).show()
 
         } else {
+
             canciones[i].start()
+
             play?.setBackgroundResource(mx.unam.fciencias.reproductor.R.drawable.pausa)
             Toast.makeText(context, "Reproduciendo canción", Toast.LENGTH_SHORT).show()
+
         }
     }
 }

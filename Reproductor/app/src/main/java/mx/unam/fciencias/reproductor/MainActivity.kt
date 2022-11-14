@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val minero = Minero()
     private val creador = CreadorBaseDeDatos(this)
     private var reproductor = Reproductor()
+    private val controlador = Controlador()
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -68,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         val mp = MediaPlayer.create(this, mx.unam.fciencias.reproductor.R.raw.tea)
         val imagen = findViewById<View>(mx.unam.fciencias.reproductor.R.id.imagen) as ImageView
         reproductor = Reproductor(play, mp, imagen, this)
+
     }
 
 
